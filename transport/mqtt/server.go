@@ -3,7 +3,6 @@ package mqtt
 import (
 	"context"
 	"fmt"
-	"net/url"
 	"sync"
 
 	"github.com/bis0si0n/kratos-transport/broker"
@@ -13,10 +12,7 @@ import (
 	"github.com/go-kratos/kratos/v2/transport"
 )
 
-var (
-	_ transport.Server     = (*Server)(nil)
-	_ transport.Endpointer = (*Server)(nil)
-)
+var _ transport.Server = (*Server)(nil)
 
 type SubscriberMap map[string]broker.Subscriber
 
@@ -70,14 +66,6 @@ func (s *Server) init(opts ...ServerOption) {
 
 func (s *Server) Name() string {
 	return string(KindMQTT)
-}
-
-func (s *Server) Endpoint() (*url.URL, error) {
-	if s.err != nil {
-		return nil, s.err
-	}
-
-	return s.keepAlive.Endpoint()
 }
 
 func (s *Server) Start(ctx context.Context) error {
